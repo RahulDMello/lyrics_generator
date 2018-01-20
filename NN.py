@@ -6,6 +6,7 @@ from keras.layers import LSTM, Dropout, Activation, Dense
 import numpy as np
 import time
 from pickle_utils import *
+import matplotlib.pyplot as plt
   
 each_len = 32
 n_input = 24
@@ -30,12 +31,13 @@ def nn_model(config):
 	
 def train_nn(X, Y, hm_epochs, config):
 	model = nn_model(config)
-	model.fit(np.array(X), np.array(Y), batch_size=256, epochs=hm_epochs)
+	history = model.fit(np.array(X), np.array(Y), batch_size=256, epochs=hm_epochs)
 	model_json = model.to_json()
 	with open("model/eminem.json", "w") as json_file:
 		json_file.write(model_json)
 	model.save_weights("eminem.h5")
 	print("saved model to model/eminem.json")
+	return history
  
 
     
@@ -43,13 +45,19 @@ def train_nn(X, Y, hm_epochs, config):
 dict = load_obj("dataset/eminem")
 input_train = dict["input"]
 output_train = dict["output"]
+print(np.shape(input_train))
+print(np.shape(output_train))
 n_epochs = 100
 
 config = {'num_layers': 5, 'hidden_state': [256, 256, 512, 512, 1024], 'n_output': 89, 'n_examples': len(input_train), 'batch_size': 256, 'learning_rate': 0.001}
 
 start_time = time.time()
-train_nn(input_train, output_train, n_epochs, config)
+history = train_nn(input_train, output_train, n_epochs, config)
 print("--- %s seconds ---" % (time.time() - start_time))
+plt.plot(history.history["loss"])
+plt.savefig("loss.png")
+plt.pause(5)
+
 
 
 

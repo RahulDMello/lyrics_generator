@@ -20,6 +20,8 @@ def get_char_from_one_hot(one_hot):
 		return '\n'
 	elif max == 30:
 		return '-'
+	elif max == 31:
+		return ' '
 	
 		
 	

@@ -72,8 +72,8 @@ def main():
 	else:
 		print("Give a text file name and save file name as command line arguments!")
 	
-if("__name__" == "__main__") :
-	main();
+if(__name__ == "__main__") :
+	main()
 	
 	
 	
