@@ -7,7 +7,7 @@ import numpy as np
 import time
 from pickle_utils import *
   
-each_len = 31
+each_len = 32
 n_input = 24
 n_output = 1 * each_len
   
@@ -15,16 +15,16 @@ n_output = 1 * each_len
 def nn_model(config):
 	model = Sequential()
 	model.add(LSTM(config['hidden_state'][0], return_sequences=True, input_shape=(n_input, each_len)))
-	model.add(Dropout(0.2))
+	model.add(Dropout(0.1))
 	for i in range(1,config['num_layers'] - 1):
 		model.add(LSTM(config['hidden_state'][i], return_sequences=True))
-		model.add(Dropout(0.2))
+		model.add(Dropout(0.1))
 	if(config['num_layers'] > 2):
 		model.add(LSTM(config['hidden_state'][config['num_layers']-1], return_sequences=False))
-		model.add(Dropout(0.2))
+		model.add(Dropout(0.1))
 	model.add(Dense(n_output))
 	model.add(Activation('softmax'))
-	model.compile(loss="categorical_crossentropy", optimizer="rmsprop", metrics=['accuracy'])
+	model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=['accuracy'])
 	return model
     
 	
@@ -43,9 +43,9 @@ def train_nn(X, Y, hm_epochs, config):
 dict = load_obj("dataset/eminem")
 input_train = dict["input"]
 output_train = dict["output"]
-n_epochs = 60
+n_epochs = 100
 
-config = {'num_layers': 3, 'hidden_state': [128, 256, 512], 'n_output': 89, 'n_examples': len(input_train), 'batch_size': 256, 'learning_rate': 0.001}
+config = {'num_layers': 5, 'hidden_state': [256, 256, 512, 512, 1024], 'n_output': 89, 'n_examples': len(input_train), 'batch_size': 256, 'learning_rate': 0.001}
 
 start_time = time.time()
 train_nn(input_train, output_train, n_epochs, config)

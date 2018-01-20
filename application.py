@@ -3,7 +3,7 @@ from keras.models import model_from_json
 from text_to_one_hot_pickle import one_hot_of
 
 
-each_len = 31
+each_len = 32
 n_input = 24
 
 def get_char_from_one_hot(one_hot):

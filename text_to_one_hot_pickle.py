@@ -3,7 +3,7 @@ from pickle_utils import *
 import numpy as np
 import os
 
-each_len = 31
+each_len = 32
 
 def one_hot_of(chr):
 	res = np.zeros(each_len)
@@ -21,6 +21,8 @@ def one_hot_of(chr):
 		res[29] = 1
 	elif(chr == '-'):
 		res[30] = 1
+	elif(chr == ' '):
+		res[31] = 1
 	return res
 	
 def get_one_hot_array_from(filename):
@@ -59,6 +61,7 @@ def main():
 		n_output = int(sys.argv[4])
 		data = get_one_hot_split_array_from(filename, n_input, n_output)
 		save_obj(data, save_file)
+		print('pickle saved as',save_file)
 		
 	elif(len(sys.argv) > 2):
 		filename = sys.argv[1]
